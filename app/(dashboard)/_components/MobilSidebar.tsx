@@ -12,19 +12,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { sidebarRoutes } from "@/constant";
+import { sidebarRoutes, teacherRoute } from "@/constant";
 import { cn } from "@/lib/utils";
-import { DialogContent } from "@radix-ui/react-dialog";
-import { Compass, Layout, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-interface MobilSidebarProps {}
-
-const MobilSidebar = ({}: MobilSidebarProps) => {
+const MobilSidebar = () => {
   const { open } = useSidebar();
   const pathname = usePathname();
+  const isTeacherPath = pathname.includes("/teacher");
   return (
     <>
       {" "}
@@ -36,13 +34,13 @@ const MobilSidebar = ({}: MobilSidebarProps) => {
         <SheetContent side="left" className="p-2">
           <SheetTitle>
             <div className="m-3 flex items-center">
-              <Image src="logo.svg" width={30} height={30} alt="logo" />
+              <Image src="/logo.svg" width={30} height={30} alt="logo" />
               <h1 className="text-xl font-bold pl-3">Learnify</h1>
             </div>
           </SheetTitle>
           <SidebarGroupContent>
             <SidebarMenu>
-              {sidebarRoutes.map((route) => (
+              {(isTeacherPath ? teacherRoute : sidebarRoutes).map((route) => (
                 <SidebarMenuItem key={route.label}>
                   <SidebarMenuButton asChild>
                     <Link
@@ -56,7 +54,7 @@ const MobilSidebar = ({}: MobilSidebarProps) => {
                         "mb-1 list-none"
                       )}
                     >
-                      {route.icon == "compass" ? <Compass /> : <Layout />}
+                      <route.icon />
                       {open && <span>{route.label}</span>}
                     </Link>
                   </SidebarMenuButton>

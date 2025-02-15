@@ -1,7 +1,6 @@
 "use client";
-import { sidebarRoutes } from "@/constant";
+import { sidebarRoutes, teacherRoute } from "@/constant";
 import Image from "next/image";
-import { Compass, Layout } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +21,8 @@ import { usePathname } from "next/navigation";
 const AppSidebar = () => {
   const { open } = useSidebar();
   const pathname = usePathname();
+
+  const isTeacherPath = pathname.includes("/teacher");
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
@@ -30,8 +31,8 @@ const AppSidebar = () => {
             "flex-col-reverse": !open,
           })}
         >
-          <Link href="/dashboard">
-            <Image src="logo.svg" width={40} height={40} alt="logo" />
+          <Link href="/">
+            <Image src="/logo.svg" width={40} height={40} alt="logo" />
           </Link>
           {open && <h1 className="text-xl font-bold">Learnify</h1>}
           <SidebarTrigger />
@@ -44,7 +45,7 @@ const AppSidebar = () => {
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {sidebarRoutes.map((route) => {
+              {(isTeacherPath ? teacherRoute : sidebarRoutes).map((route) => {
                 return (
                   <SidebarMenuItem key={route.label}>
                     <SidebarMenuButton asChild>
@@ -59,7 +60,7 @@ const AppSidebar = () => {
                           "mb-1 list-none"
                         )}
                       >
-                        {route.icon == "compass" ? <Compass /> : <Layout />}
+                        <route.icon />
                         {open && <span>{route.label}</span>}
                       </Link>
                     </SidebarMenuButton>
