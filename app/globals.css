@@ -94,3 +94,13 @@ body,
     @apply bg-background text-foreground;
   }
 }
+.formColor {
+  background-color: #f1f5f9; /* Light mode (default) */
+}
+
+.dark .formColor {
+  background-color: #252e3d; /* Dark mode */
+}
+
+
+/* @import "@uploadthing/react/styles.css"; */

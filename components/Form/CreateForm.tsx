@@ -19,7 +19,7 @@ import { CreateFormSchema } from "./Create.Form";
 import Link from "next/link";
 import { ChevronRight, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const CreateForm = () => {
   const route = useRouter();
@@ -34,9 +34,9 @@ const CreateForm = () => {
 
   const onSubmit = async (value: z.infer<typeof CreateFormSchema>) => {
     await toast
-      .promise(axios.post("/api/course", value), {
-        loading: "Saving...",
-        success: <b>Course created successfully 🚀</b>,
+      .promise(axios.post("/api/courses", value), {
+        loading: "Creating course...👉",
+        success: <b>Course created successfully 🚀🚀🚀</b>,
         error: <b>Failed to create course</b>,
       })
       .then((data) => route.push(`/teacher/course/${data.data.id}`))
@@ -48,11 +48,10 @@ const CreateForm = () => {
     <>
       <div className="max-w-5xl mx-auto flex md:items-center md:justify-center p-6 h-full ">
         <div>
-          <h1 className="text-2xl">Name your Course</h1>
-          <p className="text-sm text-slate-600">
+          <h1 className="text-3xl">Name your Course</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">
             Choose a name for your course and start creating your course
           </p>
-          <Toaster />
 
           <Form {...form}>
             <form
