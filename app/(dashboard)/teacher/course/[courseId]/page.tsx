@@ -22,6 +22,12 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
     },
   });
 
+  const category = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    }
+  })
+
   if (!course) {
     toast.error("Course not found");
     return redirect("/");
