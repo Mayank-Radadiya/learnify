@@ -9,7 +9,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -31,6 +30,7 @@ interface ComboboxProps {
 export function Combobox({ option, value, onChange }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -38,7 +38,7 @@ export function Combobox({ option, value, onChange }: ComboboxProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-between"
         >
           {value
             ? option.find((option) => option.value === value)?.label
@@ -48,26 +48,25 @@ export function Combobox({ option, value, onChange }: ComboboxProps) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
           <CommandList>
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>
-              {option.map((option) => (
+              {option.map((opt) => (
                 <CommandItem
-                  key={option.value}
-                  value={option.value}
+                  key={opt.value}
+                  value={opt.value}
                   onSelect={() => {
-                    onChange(option.value === value ? "" : option.value);
+                    onChange(opt.value === value ? "" : opt.value);
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === option.value ? "opacity-100" : "opacity-0"
+                      value === opt.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option .label}
+                  {opt.label}
                 </CommandItem>
               ))}
             </CommandGroup>

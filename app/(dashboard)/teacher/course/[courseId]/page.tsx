@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import TitleForm from "./_components/TitleForm";
 import DescriptionForm from "./_components/DescriptionFrom";
 import ImageForm from "./_components/ImageForm";
+import CategoryForm from "./_components/CategoryForm";
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -25,8 +26,8 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
   const category = await db.category.findMany({
     orderBy: {
       name: "asc",
-    }
-  })
+    },
+  });
 
   if (!course) {
     toast.error("Course not found");
@@ -64,9 +65,18 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
               <IconBadge variant="default" shadow="md" icon={LayoutDashboard} />
               <h2 className="text-xl">Customize your course</h2>
             </div>
+
             <TitleForm data={course} courseId={courseId} />
             <DescriptionForm data={course} courseId={courseId} />
             <ImageForm data={course} courseId={courseId} />
+            <CategoryForm
+              data={course}
+              courseId={courseId}
+              option={category.map((category) => ({
+                label: category.name,
+                value: category.id,
+              }))}
+            />
           </div>
         </div>
       </div>

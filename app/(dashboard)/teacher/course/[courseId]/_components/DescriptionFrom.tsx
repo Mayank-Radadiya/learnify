@@ -45,9 +45,9 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
-        loading: "Updating Course Description 👍",
-        success: <b>Course Title Updated 🚀🚀🚀</b>,
-        error: <b>Failed to update course Title</b>,
+        loading: "Updating Course Description 🥵",
+        success: <b>Course Title description 🚀🚀🚀</b>,
+        error: <b>Failed to update course description</b>,
       })
       .then((data) => route.refresh())
       .then(() => setIsEditing(false))

@@ -32,8 +32,8 @@ const ImageForm = ({ data, courseId }: descriptionFormProps) => {
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
-        loading: "Updating Course Description 👍",
-        success: <b>Course Image Updated 🚀🚀🚀</b>,
+        loading: "Updating Course Description 😑",
+        success: <b>Course Image Updated 😈</b>,
         error: <b>Failed to update course Image</b>,
       })
       .then(() => route.refresh())

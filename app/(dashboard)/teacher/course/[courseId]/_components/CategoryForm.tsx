@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Pencil, X } from "lucide-react";
 import {
@@ -21,21 +20,26 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
+import { Course } from "@prisma/client";
+import { Combobox } from "@/components/ui/combobox";
 
-interface TitleFormProps {
-  data: { title: string };
+interface CategoryFormProps {
+  data: Course;
   courseId: string;
+  option: { label: string; value: string }[];
 }
 
 const formSchema = z.object({
-  title: z.string().nonempty({ message: "Title is required" }),
+  categoryId: z.string().nonempty({ message: "Category is required" }),
 });
 
-const TitleForm = ({ data, courseId }: TitleFormProps) => {
+const CategoryForm = ({ data, courseId, option }: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: data,
+    defaultValues: { categoryId: data.categoryId || "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -43,9 +47,9 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
-        loading: "Updating Course Title 🙌",
-        success: <b>Course Title Updated 😇</b>,
-        error: <b>Failed to update course Title</b>,
+        loading: "Updating Course Category 🥵",
+        success: <b>Course Category Updated 🥳</b>,
+        error: <b>Failed to update course Category</b>,
       })
       .then((data) => route.refresh())
       .then(() => setIsEditing(false))
@@ -53,11 +57,13 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
         console.log(error);
       });
   };
+
+  const selectedOption = option.find((item) => item.value === data.categoryId);
   return (
     <>
       <div className="formColor mt-6 border  rounded-md p-4">
         <div className="font-medium flex justify-between items-center">
-          Course Title
+          Course Category
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -78,13 +84,15 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
             </TooltipTrigger>
             <TooltipContent>
               {" "}
-              {isEditing ? "Cancel" : "Edit Title"}{" "}
+              {isEditing ? "Cancel" : "Edit Category"}{" "}
             </TooltipContent>
           </Tooltip>
         </div>
         {!isEditing && (
           <>
-            <p className="text-sm mt-2">{data.title} </p>
+            <p className={cn("text-sm mt-2", !data.categoryId && "italic")}>
+              {selectedOption?.label || "No Category"}{" "}
+            </p>
           </>
         )}
 
@@ -95,18 +103,14 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
               className="space-y-8 mt-8"
             >
               <FormField
-                name="title"
+                name="categoryId"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isSubmitting}
-                        placeholder="e.g Basic to Advance AI/ML"
-                      />
+                      <Combobox option={option} {...field} />
                     </FormControl>
-                    <FormDescription>Edit course title</FormDescription>
+                    <FormDescription>Edit course Category</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -133,4 +137,4 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
   );
 };
 
-export default TitleForm;
+export default CategoryForm;
