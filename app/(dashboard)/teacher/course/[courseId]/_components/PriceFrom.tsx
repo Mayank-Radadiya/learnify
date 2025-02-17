@@ -40,7 +40,7 @@ const PriceForm = ({ data, courseId }: PriceFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: { price: data.price || null },
+    defaultValues: { price: data.price ?? undefined },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -72,12 +72,12 @@ const PriceForm = ({ data, courseId }: PriceFormProps) => {
               >
                 {isEditing ? (
                   <>
-                    <X className="h-5 w-5 mr-2" />{" "}
+                    <X className="h-5 w-5" />{" "}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <Pencil className="h-4 w-4 mr-2" />
+                    <Pencil className="h-4 w-4" />
                   </>
                 )}
               </Button>

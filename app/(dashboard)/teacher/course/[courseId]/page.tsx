@@ -9,7 +9,11 @@ import DescriptionForm from "./_components/DescriptionFrom";
 import ImageForm from "./_components/ImageForm";
 import CategoryForm from "./_components/CategoryForm";
 import PriceForm from "./_components/PriceFrom";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -56,7 +60,25 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">Course Setup</h1>
             <span className="text-sm text-slate-700 dark:text-gray-300">
-              ({completionText}) fields completed
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-sm text-slate-700 dark:text-gray-300">
+                    ({completionText}) fields completed
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {requiredFields.map((field, index) => {
+                    if (!field) {
+                      return (
+                        <p key={index} className="text-red-500 text-sm">
+                          {Object.keys(course)[index]} is required
+                        </p>
+                      );
+                    }
+                    return null;
+                  })}
+                </TooltipContent>
+              </Tooltip>
             </span>
           </div>
         </div>

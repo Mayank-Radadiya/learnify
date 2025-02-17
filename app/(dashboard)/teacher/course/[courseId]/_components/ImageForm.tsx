@@ -32,7 +32,7 @@ const ImageForm = ({ data, courseId }: descriptionFormProps) => {
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
-        loading: "Updating Course Description 😑",
+        loading: "Updating Course Image 😑",
         success: <b>Course Image Updated 😈</b>,
         error: <b>Failed to update course Image</b>,
       })
@@ -55,12 +55,12 @@ const ImageForm = ({ data, courseId }: descriptionFormProps) => {
               >
                 {isEditing ? (
                   <>
-                    <X className="h-5 w-5 mr-2" />{" "}
+                    <X className="h-5 w-5" />{" "}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4" />
                   </>
                 )}
               </Button>

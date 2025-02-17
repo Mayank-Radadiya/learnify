@@ -21,7 +21,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@prisma/client";
 import { Combobox } from "@/components/ui/combobox";
 
@@ -72,12 +71,12 @@ const CategoryForm = ({ data, courseId, option }: CategoryFormProps) => {
               >
                 {isEditing ? (
                   <>
-                    <X className="h-5 w-5 mr-2" />{" "}
+                    <X className="h-5 w-5" />{" "}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <Pencil className="h-4 w-4 mr-2" />
+                    <Pencil className="h-4 w-4" />
                   </>
                 )}
               </Button>

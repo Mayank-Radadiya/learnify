@@ -68,12 +68,12 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
               >
                 {isEditing ? (
                   <>
-                    <X className="h-5 w-5 mr-2" />{" "}
+                    <X className="h-5 w-5" />{" "}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <Pencil className="h-4 w-4 mr-2" />
+                    <Pencil className="h-4 w-4" />
                   </>
                 )}
               </Button>
