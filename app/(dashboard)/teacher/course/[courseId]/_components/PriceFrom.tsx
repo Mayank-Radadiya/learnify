@@ -21,33 +21,37 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@prisma/client";
+import { Input } from "@/components/ui/input";
 
-interface descriptionFormProps {
+interface PriceFormProps {
   data: Course;
   courseId: string;
 }
 
 const formSchema = z.object({
-  description: z.string().nonempty({ message: "Description is required" }),
+  price: z
+    .number()
+    .int()
+    .positive({ message: "Price must be a positive number" }),
 });
 
-const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
+const PriceForm = ({ data, courseId }: PriceFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: { description: data.description || "" },
+    defaultValues: { price: data.price || null },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    const payload = { price: Number(value.price) }; // make sure price should be a number
     await toast
-      .promise(axios.patch(`/api/courses/${courseId}`, value), {
-        loading: "Updating Course Description 🥵",
-        success: <b>Course description 🚀🚀🚀</b>,
-        error: <b>Failed to update course description</b>,
+      .promise(axios.patch(`/api/courses/${courseId}`, payload), {
+        loading: "Updating Course Price 🥵",
+        success: <b>Course price 💸💸💸 </b>,
+        error: <b>Failed to update course price</b>,
       })
       .then((data) => route.refresh())
       .then(() => setIsEditing(false))
@@ -59,7 +63,7 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
     <>
       <div className="formColor mt-6 border  rounded-md p-4">
         <div className="font-medium flex justify-between items-center">
-          Course Description
+          Course Price
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -80,14 +84,14 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
             </TooltipTrigger>
             <TooltipContent>
               {" "}
-              {isEditing ? "Cancel" : "Edit Description"}{" "}
+              {isEditing ? "Cancel" : "Edit Price"}{" "}
             </TooltipContent>
           </Tooltip>
         </div>
         {!isEditing && (
           <>
-            <p className={cn("text-sm mt-2", !data.description && "italic")}>
-              {data.description || "No description"}{" "}
+            <p className={cn("text-sm mt-2", !data.price && "italic")}>
+              {data.price || "No Price assign"}{" "}
             </p>
           </>
         )}
@@ -99,18 +103,21 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
               className="space-y-8 mt-8"
             >
               <FormField
-                name="description"
+                name="price"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea
+                      <Input
+                        type="number"
+                        step="0.01"
                         {...field}
+                        value={field?.value || ""}
                         disabled={isSubmitting}
-                        placeholder="This course is about..."
+                        placeholder="69.69"
                       />
                     </FormControl>
-                    <FormDescription>Edit course Description</FormDescription>
+                    <FormDescription>Edit course Price</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -137,4 +144,4 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
   );
 };
 
-export default DescriptionForm;
+export default PriceForm;

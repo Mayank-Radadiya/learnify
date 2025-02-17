@@ -41,6 +41,7 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
         loading: "Updating Course Title 🙌",

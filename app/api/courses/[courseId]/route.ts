@@ -8,6 +8,14 @@ export async function PATCH(
 ) {
   try {
     const value = await req.json();
+    // Ensure value is an object
+    if (!value || typeof value !== "object") {
+      return NextResponse.json(
+        { error: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+    console.log("value", value);
     const { courseId } = await params;
     const { userId } = await auth();
 
@@ -27,7 +35,7 @@ export async function PATCH(
 
     return NextResponse.json(course);
   } catch (error) {
-    console.error("Course Title error", error);
-    return NextResponse.json("Failed to update course Title", { status: 500 });
+    console.error("Course  error", error);
+    return NextResponse.json("Failed to update course ", { status: 500 });
   }
 }

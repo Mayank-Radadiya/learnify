@@ -1,13 +1,15 @@
 import { IconBadge } from "@/components/global/Icon-bage";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { LayoutDashboard } from "lucide-react";
+import { CircleDollarSign, LayoutDashboard, ListCheck } from "lucide-react";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import TitleForm from "./_components/TitleForm";
 import DescriptionForm from "./_components/DescriptionFrom";
 import ImageForm from "./_components/ImageForm";
 import CategoryForm from "./_components/CategoryForm";
+import PriceForm from "./_components/PriceFrom";
+
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -77,6 +79,26 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
                 value: category.id,
               }))}
             />
+          </div>
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={ListCheck} />
+                <h2 className="text-xl">Course Chapter</h2>
+              </div>
+              <p className="text-sm mt-4 text-slate-700 dark:text-gray-300">
+                Add chapters to your course to make it easier for students to
+                navigate your content.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={CircleDollarSign} variant="success" />
+                <h2 className="text-xl">Sell Your Course</h2>
+              </div>
+              <PriceForm data={course} courseId={courseId} />
+            </div>
           </div>
         </div>
       </div>
