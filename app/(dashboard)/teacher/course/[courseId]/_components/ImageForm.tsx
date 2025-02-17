@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Course } from "@prisma/client";
 import Image from "next/image";
 import FileUpload from "@/components/global/File-Upload";
+import { cn } from "@/lib/utils";
 
 interface descriptionFormProps {
   data: Course;
@@ -32,10 +33,10 @@ const ImageForm = ({ data, courseId }: descriptionFormProps) => {
     await toast
       .promise(axios.patch(`/api/courses/${courseId}`, value), {
         loading: "Updating Course Description 👍",
-        success: <b>Course Title Updated 🚀🚀🚀</b>,
-        error: <b>Failed to update course Title</b>,
+        success: <b>Course Image Updated 🚀🚀🚀</b>,
+        error: <b>Failed to update course Image</b>,
       })
-      .then((data) => route.refresh())
+      .then(() => route.refresh())
       .then(() => setIsEditing(false))
       .catch((error) => {
         console.log(error);
@@ -73,6 +74,11 @@ const ImageForm = ({ data, courseId }: descriptionFormProps) => {
             </TooltipContent>
           </Tooltip>
         </div>
+        {!isEditing && !data.imageUrl && (
+          <>
+            <p className="text-sm mt-2 italic">No Image</p>
+          </>
+        )}
 
         {!isEditing &&
           (!data.imageUrl ? (
