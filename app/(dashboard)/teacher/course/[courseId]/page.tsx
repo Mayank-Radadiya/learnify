@@ -1,7 +1,13 @@
 import { IconBadge } from "@/components/global/Icon-bage";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { CircleDollarSign, LayoutDashboard, ListCheck } from "lucide-react";
+import {
+  CircleDollarSign,
+  File,
+  LayoutDashboard,
+  ListCheck,
+  Paperclip,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import TitleForm from "./_components/TitleForm";
@@ -14,6 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import AttachmentForm from "./_components/AttachmentForm";
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -26,6 +33,13 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: courseId,
+    },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -41,15 +55,15 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
   }
 
   const requiredFields = [
-    course.title,
-    course.description,
-    course.imageUrl,
-    course.price,
-    course.categoryId,
+    { key: "title", value: course.title },
+    { key: "description", value: course.description },
+    { key: "imageUrl", value: course.imageUrl },
+    { key: "price", value: course.price },
+    { key: "categoryId", value: course.categoryId },
   ];
 
   const totalFields = requiredFields.length;
-  const completedFields = requiredFields.filter(Boolean).length;
+  const completedFields = requiredFields.filter((field) => field.value).length;
 
   const completionText = `${completedFields}/${totalFields}`;
 
@@ -66,18 +80,21 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
                     ({completionText}) fields completed
                   </span>
                 </TooltipTrigger>
-                <TooltipContent>
-                  {requiredFields.map((field, index) => {
-                    if (!field) {
-                      return (
-                        <p key={index} className="text-red-500 text-sm">
-                          {Object.keys(course)[index]} is required
-                        </p>
-                      );
-                    }
-                    return null;
-                  })}
-                </TooltipContent>
+                {completedFields !== totalFields && (
+                  <TooltipContent>
+                    <p>Required fields</p>
+                    {requiredFields.map(({ key, value }) => {
+                      if (!value) {
+                        return (
+                          <p key={key} className="text-red-500">
+                            {key.toUpperCase()}
+                          </p>
+                        );
+                      }
+                      return null;
+                    })}
+                  </TooltipContent>
+                )}
               </Tooltip>
             </span>
           </div>
@@ -116,10 +133,21 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
 
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={CircleDollarSign} variant="success" />
+                <IconBadge
+                  icon={CircleDollarSign}
+                  variant="success"
+                  shadow="md"
+                />
                 <h2 className="text-xl">Sell Your Course</h2>
               </div>
               <PriceForm data={course} courseId={courseId} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Paperclip} shadow="xl" />
+                <h2 className="text-xl">Resources & Attachments</h2>
+              </div>
+              <AttachmentForm data={course} courseId={courseId} />
             </div>
           </div>
         </div>

@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { Input } from "@/components/ui/input";
+import { FormatPrice } from "@/lib/FormatPrice";
 
 interface PriceFormProps {
   data: Course;
@@ -91,7 +92,7 @@ const PriceForm = ({ data, courseId }: PriceFormProps) => {
         {!isEditing && (
           <>
             <p className={cn("text-sm mt-2", !data.price && "italic")}>
-              {data.price || "No Price assign"}{" "}
+              {data.price ? FormatPrice(data.price) : "No Price assign"}
             </p>
           </>
         )}
