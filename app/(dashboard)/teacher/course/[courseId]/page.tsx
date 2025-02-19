@@ -3,28 +3,31 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import {
   CircleDollarSign,
-  File,
   LayoutDashboard,
   ListCheck,
   Paperclip,
 } from "lucide-react";
-import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
-import TitleForm from "./_components/TitleForm";
-import DescriptionForm from "./_components/DescriptionFrom";
-import ImageForm from "./_components/ImageForm";
-import CategoryForm from "./_components/CategoryForm";
-import PriceForm from "./_components/PriceFrom";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
+
+import TitleForm from "./_components/TitleForm";
+import DescriptionForm from "./_components/DescriptionFrom";
+import ImageForm from "./_components/ImageForm";
+import CategoryForm from "./_components/CategoryForm";
+import PriceForm from "./_components/PriceFrom";
 import AttachmentForm from "./_components/AttachmentForm";
+import ChapterFrom from "./_components/ChapterFrom";
+import { cn } from "@/lib/utils";
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
   const { courseId } = await params;
+
   if (!userId) {
     toast.error("You must be logged in to view this page");
     return redirect("/");
@@ -33,8 +36,14 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: courseId,
+      userId,
     },
     include: {
+      chapters: {
+        orderBy: {
+          position: "asc",
+        },
+      },
       attachments: {
         orderBy: {
           createdAt: "desc",
@@ -60,6 +69,10 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
     { key: "imageUrl", value: course.imageUrl },
     { key: "price", value: course.price },
     { key: "categoryId", value: course.categoryId },
+    {
+      key: "chapters",
+      value: course.chapters.some((chap) => chap.isPublished),
+    },
   ];
 
   const totalFields = requiredFields.length;
@@ -76,13 +89,20 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
             <span className="text-sm text-slate-700 dark:text-gray-300">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="text-sm text-slate-700 dark:text-gray-300">
+                  <span
+                    className={cn(
+                      "text-sm text-slate-700 dark:text-gray-300",
+                      completedFields === totalFields
+                        ? "text-green-500"
+                        : "text-red-500"
+                    )}
+                  >
                     ({completionText}) fields completed
                   </span>
                 </TooltipTrigger>
                 {completedFields !== totalFields && (
                   <TooltipContent>
-                    <p>Required fields</p>
+                    <p>Required fields:</p>
                     {requiredFields.map(({ key, value }) => {
                       if (!value) {
                         return (
@@ -122,13 +142,16 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={ListCheck} />
+                <IconBadge icon={ListCheck} shadow="sm" />
                 <h2 className="text-xl">Course Chapter</h2>
               </div>
               <p className="text-sm mt-4 text-slate-700 dark:text-gray-300">
                 Add chapters to your course to make it easier for students to
                 navigate your content.
               </p>
+              <div>
+                <ChapterFrom data={course} courseId={courseId} />
+              </div>
             </div>
 
             <div>

@@ -15,7 +15,6 @@ export async function PATCH(
         { status: 400 }
       );
     }
-    console.log("value", value);
     const { courseId } = await params;
     const { userId } = await auth();
 

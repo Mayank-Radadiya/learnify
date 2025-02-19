@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface TitleFormProps {
   data: { title: string };
@@ -35,6 +36,7 @@ const TitleForm = ({ data, courseId }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: data,
   });
 

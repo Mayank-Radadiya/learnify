@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { Combobox } from "@/components/ui/combobox";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CategoryFormProps {
   data: Course;
@@ -38,6 +39,7 @@ const CategoryForm = ({ data, courseId, option }: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: { categoryId: data.categoryId || "" },
   });
 

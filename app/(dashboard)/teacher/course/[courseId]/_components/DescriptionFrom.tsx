@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface descriptionFormProps {
   data: Course;
@@ -37,6 +38,7 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: { description: data.description || "" },
   });
 

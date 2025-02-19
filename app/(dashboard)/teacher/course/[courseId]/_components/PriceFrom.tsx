@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { FormatPrice } from "@/lib/FormatPrice";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface PriceFormProps {
   data: Course;
