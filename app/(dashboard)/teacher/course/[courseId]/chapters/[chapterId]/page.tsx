@@ -7,12 +7,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
-import { ChevronLeft, Eye, LayoutDashboard, Pencil, X } from "lucide-react";
+import { ChevronLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ChapterTitleForm from "./_components/ChapterTitleForm";
 import ChapterDescriptionForm from "./_components/ChapterDescriptionForm";
 import ChapterAccessForm from "./_components/ChapterAccessFrom";
+import VideoForm from "./_components/ChapterVideoForm";
 
 const Page = async ({
   params,
@@ -124,6 +125,13 @@ const Page = async ({
             courseId={courseId}
             data={chapter}
           />
+        </div>
+        <div>
+          <div className="flex items-center gap-x-2">
+            <IconBadge size="md" variant="success" shadow="md" icon={Video} />
+            <h2 className="text-xl">Add a Video</h2>
+          </div>
+          <VideoForm chapterId={chapterId} courseId={courseId} data={chapter} />
         </div>
       </div>
     </div>

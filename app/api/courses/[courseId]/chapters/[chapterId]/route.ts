@@ -1,5 +1,11 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import Mux from "@mux/mux-node";
+
+const { video } = new Mux({
+  tokenId: process.env.MUX_TOKEN_ID!,
+  tokenSecret: process.env.MUX_TOKEN_SECRET!,
+});
 
 export async function PATCH(
   req: NextRequest,
@@ -23,9 +29,41 @@ export async function PATCH(
       },
     });
 
+    if (data.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId,
+        },
+      });
+
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+
+      const asset = await video.assets.create({
+        input: data.videoUrl,
+        playback_policy: ["public"],
+        test: false,
+      });
+
+      await db.muxData.create({
+        data: {
+          chapterId,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
+        },
+      });
+    }
     return new NextResponse("Chapter Updated Successfully...", { status: 200 });
   } catch (error) {
     console.log("Error from Chapter/id Patch route", error);
     return new NextResponse("Error Failed to update Data...", { status: 500 });
   }
 }
+
+
