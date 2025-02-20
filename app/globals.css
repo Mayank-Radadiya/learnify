@@ -100,3 +100,7 @@ body,
 .dark .formColor {
   background-color: #252e3d; /* Dark mode */
 }
+
+.ql-container {
+  font-size: 15px !important;
+}
