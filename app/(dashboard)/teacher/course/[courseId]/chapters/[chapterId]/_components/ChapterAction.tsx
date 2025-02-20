@@ -26,8 +26,7 @@ const ChapterAction = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
-
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted successfully");
       route.push(`/teacher/course/${courseId}`);
       route.refresh();
@@ -37,10 +36,51 @@ const ChapterAction = ({
       setLoading(false);
     }
   };
+  const onPublish = async () => {
+    if (disabled) {
+      toast.error("Please fill all the required fields to publish the chapter");
+      return;
+    }
+    setLoading(true);
+    if (isPublished) {
+      await toast
+        .promise(
+          axios.patch(
+            `/api/courses/${courseId}/chapters/${chapterId}/unpublish`
+          ),
+          {
+            loading: "Updating Chapter... 🙌",
+            success: <b>Chapter is unpublished Now 🥹</b>,
+            error: <b>Failed to unpublished Chapter</b>,
+          }
+        )
+        .then(() => route.refresh())
+        .catch((error) => {
+          console.log(error);
+        });
+      setLoading(false);
+    } else {
+      await toast
+        .promise(
+          axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`),
+          {
+            loading: "Updating Chapter... 🙌",
+            success: <b>Chapter is published Now 🥳🥳🥳</b>,
+            error: <b>Failed to published Chapter</b>,
+          }
+        )
+        .then(() => route.refresh())
+        .catch((error) => {
+          console.log(error);
+        });
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex items-center gap-x-2">
       <button
-        disabled={disabled}
+        onClick={onPublish}
         className="group/button relative inline-flex items-center justify-center overflow-hidden rounded-md bg-blue-500/90 backdrop-blur-lg px-4 py-1.5 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-blue-600/50 border border-white/20"
       >
         <span className="text-lg">{isPublished ? "Unpublish" : "Publish"}</span>

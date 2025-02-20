@@ -70,7 +70,7 @@ const ChapterList = ({ items, onEdit, onReorder }: ChapterListProps) => {
                     className={cn(
                       "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
                       item.isPublished &&
-                        "bg-sky-200 border-sky-200 text-sky-700 dark:bg-sky-800 dark:border-sky-800"
+                        "bg-sky-200 border-sky-200  text-black "
                     )}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -79,7 +79,7 @@ const ChapterList = ({ items, onEdit, onReorder }: ChapterListProps) => {
                       className={cn(
                         "p-1 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
                         item.isPublished &&
-                          "bg-sky-200 border-sky-200 text-sky-700 dark:bg-sky-800 dark:border-sky-800"
+                          "bg-sky-200 border-sky-200 text-black"
                       )}
                       {...provided.dragHandleProps}
                     >

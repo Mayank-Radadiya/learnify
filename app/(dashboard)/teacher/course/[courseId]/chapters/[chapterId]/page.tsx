@@ -15,7 +15,6 @@ import ChapterDescriptionForm from "./_components/ChapterDescriptionForm";
 import ChapterAccessForm from "./_components/ChapterAccessFrom";
 import VideoForm from "./_components/ChapterVideoForm";
 import Banner from "@/components/global/Banner";
-import { boolean } from "zod";
 import ChapterAction from "./_components/ChapterAction";
 
 const Page = async ({
@@ -53,7 +52,7 @@ const Page = async ({
 
   const completionText = `${completedFields}/${totalFields}`;
 
-  const isComplete = requiredFields.every(Boolean);
+  const isComplete = completedFields === totalFields;
 
   return (
     <>
@@ -78,10 +77,10 @@ const Page = async ({
                     Chapter Creation
                   </h1>
                   <ChapterAction
-                  disabled = {!isComplete}
-                  courseId = {courseId}
-                  chapterId = {chapterId}
-                  isPublished = {chapter.isPublished}
+                    disabled={!isComplete}
+                    courseId={courseId}
+                    chapterId={chapterId}
+                    isPublished={chapter.isPublished}
                   />
                 </div>
                 <span className="text-sm text-slate-700 dark:text-gray-300">
@@ -98,7 +97,7 @@ const Page = async ({
                         ({completionText}) fields completed
                       </span>
                     </TooltipTrigger>
-                    {!completedFields && (
+                    {!isComplete && (
                       <TooltipContent
                         align="center"
                         className="p-2 rounded-md bg-background shadow-md mb-2"
