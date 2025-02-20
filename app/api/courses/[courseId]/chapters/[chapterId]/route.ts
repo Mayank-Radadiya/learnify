@@ -66,4 +66,72 @@ export async function PATCH(
   }
 }
 
+export async function DELETE(
+  req: NextRequest,
+  params: { params: { chapterId: string; courseId: string } }
+) {
+  try {
+    const { chapterId, courseId } = await params.params;
 
+    if (!chapterId || !courseId) {
+      return new NextResponse("Invalid request body", { status: 400 });
+    }
+
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+    });
+
+    if (!chapter) {
+      return new NextResponse("Chapter Not Found...", { status: 404 });
+    }
+
+    if (chapter.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId,
+        },
+      });
+
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+    }
+
+    const deleteChapter = await db.chapter.delete({
+      where: {
+        id: chapterId,
+      },
+    });
+
+    const publishedChapterCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+
+    if (!publishedChapterCourse.length) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+
+    return NextResponse.json(deleteChapter, { status: 200 });
+  } catch (error) {
+    console.log("Error from Chapter/id Delete route", error);
+    return new NextResponse("Error Failed to Delete Data...", { status: 500 });
+  }
+}
