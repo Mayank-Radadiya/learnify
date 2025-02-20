@@ -1,5 +1,4 @@
 import { IconBadge } from "@/components/global/Icon-bage";
-import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
@@ -8,11 +7,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
-import { ChevronLeft, LayoutDashboard, Pencil, X } from "lucide-react";
+import { ChevronLeft, Eye, LayoutDashboard, Pencil, X } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ChapterTitleForm from "./_components/ChapterTitleForm";
-import ChapterDescriptionForm from "./_components/ChapterDecriptionForm";
+import ChapterDescriptionForm from "./_components/ChapterDescriptionForm";
+import ChapterAccessForm from "./_components/ChapterAccessFrom";
 
 const Page = async ({
   params,
@@ -115,6 +115,15 @@ const Page = async ({
               data={chapter}
             />
           </div>
+          <div className="flex items-center gap-x-2">
+            <IconBadge variant="default" shadow="md" icon={Eye} />
+            <h2 className="text-xl">Access Setting</h2>
+          </div>
+          <ChapterAccessForm
+            chapterId={chapterId}
+            courseId={courseId}
+            data={chapter}
+          />
         </div>
       </div>
     </div>

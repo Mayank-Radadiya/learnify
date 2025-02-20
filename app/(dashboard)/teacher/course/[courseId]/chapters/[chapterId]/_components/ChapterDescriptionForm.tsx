@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Chapter } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Editor from "@/components/Editor/Editor";
 import TextEditor from "@/components/Editor/Editor";
 import Preview from "@/components/Editor/Preview";
 
