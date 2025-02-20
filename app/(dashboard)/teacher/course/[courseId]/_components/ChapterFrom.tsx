@@ -80,7 +80,7 @@ const ChapterFrom = ({ data, courseId }: ChapterFromProps) => {
   };
 
   const onEdit = (id: string) => {
-    route.push(`/teacher/course/${courseId}/chapter/${id}`);
+    route.push(`/teacher/course/${courseId}/chapters/${id}`);
   };
   return (
     <>

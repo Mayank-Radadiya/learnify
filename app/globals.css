@@ -75,7 +75,6 @@ body,
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --sidebar-background: 225 12.8% 15%;
-    /* --sidebar-background: 225 4% 11%;      Dark slate background */
     --sidebar-foreground: 0 0% 98%; /* Off-white text */
     --sidebar-primary: 240 4.8% 93%; /* Light accent for primary elements */
     --sidebar-primary-foreground: 240 5.9% 10%; /* Dark text for primary elements */
@@ -101,6 +100,3 @@ body,
 .dark .formColor {
   background-color: #252e3d; /* Dark mode */
 }
-
-
-/* @import "@uploadthing/react/styles.css"; */
