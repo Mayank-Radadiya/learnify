@@ -83,7 +83,7 @@ const VideoForm = ({ data, courseId, chapterId }: descriptionFormProps) => {
         </div>
         {!isEditing && !data.videoUrl && (
           <>
-            <p className="text-sm mt-2 italic">No Image</p>
+            <p className="text-sm mt-2 italic">No Video</p>
           </>
         )}
 
