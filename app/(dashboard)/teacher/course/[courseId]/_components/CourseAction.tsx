@@ -2,6 +2,7 @@
 
 import Model from "@/components/global/Model";
 import { Button } from "@/components/ui/button";
+import { useConfetti } from "@/hooks/use-confetti";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ const CourseAction = ({
   isPublished,
   disabled,
 }: CourseActionProps) => {
+  const confetti = useConfetti();
   const [loading, setLoading] = useState(false);
   const route = useRouter();
 
@@ -70,7 +72,10 @@ const CourseAction = ({
           success: <b>Course is published Now 🥳🥳🥳</b>,
           error: <b>Failed to published Course</b>,
         })
-        .then(() => route.refresh())
+        .then(() => {
+          route.refresh();
+          confetti.OnOpen();
+        })
         .catch((error) => {
           console.log(error);
         });
