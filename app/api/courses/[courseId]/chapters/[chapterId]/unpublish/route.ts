@@ -8,7 +8,6 @@ export async function PATCH(
   try {
     const { chapterId, courseId } = await params.params;
 
-
     const isUnPublishChapter = await db.chapter.update({
       where: {
         id: chapterId,
@@ -17,6 +16,24 @@ export async function PATCH(
         isPublished: false,
       },
     });
+
+    const publishChapterInCourse = await db.chapter.findMany({
+      where: {
+        id: courseId,
+        isPublished: true,
+      },
+    });
+
+    if (publishChapterInCourse.length === 0) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
 
     return Response.json(isUnPublishChapter, { status: 200 });
   } catch (error) {
