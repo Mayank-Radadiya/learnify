@@ -23,6 +23,8 @@ import PriceForm from "./_components/PriceFrom";
 import AttachmentForm from "./_components/AttachmentForm";
 import ChapterFrom from "./_components/ChapterFrom";
 import { cn } from "@/lib/utils";
+import CourseAction from "./_components/CourseAction";
+import Banner from "@/components/global/Banner";
 
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -63,6 +65,44 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
     return redirect("/");
   }
 
+  const isPublishCourseMissingFields = await db.course.findUnique({
+    where: {
+      id: courseId,
+    },
+    select: {
+      title: true,
+      description: true,
+      imageUrl: true,
+      price: true,
+      categoryId: true,
+      chapters: {
+        select: {
+          isPublished: true,
+        },
+      },
+    },
+  });
+
+  if (isPublishCourseMissingFields) {
+    if (
+      !isPublishCourseMissingFields.title ||
+      !isPublishCourseMissingFields.description ||
+      !isPublishCourseMissingFields.imageUrl ||
+      !isPublishCourseMissingFields.price ||
+      !isPublishCourseMissingFields.categoryId ||
+      !isPublishCourseMissingFields.chapters.some((chap) => chap.isPublished)
+    ) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+  }
+
   const requiredFields = [
     { key: "title", value: course.title },
     { key: "description", value: course.description },
@@ -80,12 +120,29 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
 
   const completionText = `${completedFields}/${totalFields}`;
 
+  const isCompleted = completedFields === totalFields;
+
   return (
     <>
+      {!course.isPublished ? (
+        <Banner label="This course unpublish. It will not visible to student." />
+      ) : (
+        <Banner
+          variant="success"
+          label="This course is published.Now,you can sell it."
+        />
+      )}
       <div className="p-6">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl font-medium">Course Setup</h1>
+          <div className="flex flex-col gap-y-2 w-full">
+            <div className="flex items-center gap-x-2 w-full justify-between">
+              <h1 className="text-2xl font-medium">Course Setup</h1>
+              <CourseAction
+                isPublished={course.isPublished}
+                disabled={!isCompleted}
+                courseId={courseId}
+              />
+            </div>
             <span className="text-sm text-slate-700 dark:text-gray-300">
               <Tooltip>
                 <TooltipTrigger asChild>

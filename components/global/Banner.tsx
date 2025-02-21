@@ -10,7 +10,8 @@ const bannerVariants = cva(
       variant: {
         warning:
           "border-yellow-200/80  border-yellow-30 bg-yellow-100 dark:bg-yellow-200/75 dark:text-black",
-        success: "border-emerald-200/80 border-emerald-30 bg-emerald-100 dark:bg-emerald-200/75 dark:text-black",
+        success:
+          "border-emerald-200/80 border-emerald-30 bg-emerald-100 dark:bg-emerald-200/75 dark:text-black",
       },
     },
     defaultVariants: {
@@ -25,7 +26,7 @@ interface BannerProps extends VariantProps<typeof bannerVariants> {
 
 const iconMap = {
   warning: <AlertTriangle className="h-5 w-5 mr-2 text-yellow-600" />,
-  success: <CheckCircleIcon className="h-5 w-5 text-emerald-500" />,
+  success: <CheckCircleIcon className="h-5 w-5 mr-2 text-emerald-500" />,
 };
 
 const Banner = ({ label, variant }: BannerProps) => {

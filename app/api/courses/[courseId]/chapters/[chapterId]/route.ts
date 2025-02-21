@@ -88,22 +88,25 @@ export async function DELETE(
       return new NextResponse("Chapter Not Found...", { status: 404 });
     }
 
-    if (chapter.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
-        where: {
-          chapterId,
-        },
-      });
+    // because my mux account is not verified.It will not work.Video automatically deleted after 1 days.
+    
 
-      if (existingMuxData) {
-        await video.assets.delete(existingMuxData.assetId);
-        await db.muxData.delete({
-          where: {
-            id: existingMuxData.id,
-          },
-        });
-      }
-    }
+    // if (chapter.videoUrl) {
+    //   const existingMuxData = await db.muxData.findFirst({
+    //     where: {
+    //       chapterId,
+    //     },
+    //   });
+
+    //   if (existingMuxData) {
+    //     await video.assets.delete(existingMuxData.assetId);
+    //     await db.muxData.delete({
+    //       where: {
+    //         id: existingMuxData.id,
+    //       },
+    //     });
+    //   }
+    // }
 
     const deleteChapter = await db.chapter.delete({
       where: {
