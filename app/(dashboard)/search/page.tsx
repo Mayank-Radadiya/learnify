@@ -1,12 +1,29 @@
-import { NextPage } from 'next';
+"use client";
+import { Category } from "@prisma/client";
+import axios from "axios";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
+import Categories from "./_components/Categories";
 
 interface PageProps {}
 
 const Page: NextPage<PageProps> = ({}) => {
+  const [data, setData] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/categories");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
-    <div>
-      <h1>Title: new Page</h1>
-      <p>Page</p>
+    <div className="p-6">
+      <Categories item={data} />
     </div>
   );
 };
