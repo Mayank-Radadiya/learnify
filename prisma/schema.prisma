@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -33,6 +34,7 @@ model Course {
   updatedAt   DateTime @updatedAt
   // Add a new field
   @@index([categoryId])
+  @@index([title])
 }
 
 
