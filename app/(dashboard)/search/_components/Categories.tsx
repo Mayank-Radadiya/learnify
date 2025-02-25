@@ -72,7 +72,7 @@ const Categories = ({ item }: CategoriesProps) => {
   return (
     <>
       <div className="flex flex-wrap items-center gap-x-2 pb-2">
-        {item.slice(0, 15).map((category) => (
+        {item.slice(0, 12).map((category) => (
           <CategoryItem
             key={category.id}
             label={category.name}
