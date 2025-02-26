@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import MuxPlayer from "@mux/mux-player-react";
 import { Loader2, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 interface VideoPlayerProps {
   chapterId: string;
@@ -44,7 +45,7 @@ const VideoPlayer = ({
           <p className="text-sm text-slate-400">This chapter is locked.</p>
         </div>
       )}
-      {!isLocked && isMounted && ( // ✅ Renders MuxPlayer only after hydration
+      {!isLocked && isMounted && (
         <MuxPlayer
           title={title}
           className={cn(!isReady && "hidden")}
@@ -52,6 +53,10 @@ const VideoPlayer = ({
           onEnded={() => {}}
           autoPlay
           playbackId={playbackId}
+          onError={(event) => {
+            console.error("MuxPlayer Error:", event);
+            toast.error("Failed to load video.");
+          }}
         />
       )}
     </div>

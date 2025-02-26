@@ -22,7 +22,7 @@ const CourseSidebarItem = ({
 }: CourseSidebarItemProps) => {
   const pathname = usePathname();
 
-  const Icon = !isFree ? Lock : isCompleted ? PlayCircle : PlayCircle;
+  const Icon = isFree ? Lock : (isCompleted ? PlayCircle : PlayCircle);
   const isActive = pathname?.includes(id);
 
   return (
