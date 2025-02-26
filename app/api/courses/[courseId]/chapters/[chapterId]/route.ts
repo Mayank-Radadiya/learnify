@@ -30,20 +30,20 @@ export async function PATCH(
     });
 
     if (data.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
-        where: {
-          chapterId,
-        },
-      });
+      // const existingMuxData = await db.muxData.findFirst({
+      //   where: {
+      //     chapterId,
+      //   },
+      // });
 
-      if (existingMuxData) {
-        await video.assets.delete(existingMuxData.assetId);
-        await db.muxData.delete({
-          where: {
-            id: existingMuxData.id,
-          },
-        });
-      }
+      // if (existingMuxData) {
+      //   await video.assets.delete(existingMuxData.assetId);
+      //   await db.muxData.delete({
+      //     where: {
+      //       id: existingMuxData.id,
+      //     },
+      //   });
+      // }
 
       const asset = await video.assets.create({
         input: data.videoUrl,
@@ -51,12 +51,17 @@ export async function PATCH(
         test: false,
       });
 
-      await db.muxData.create({
-        data: {
+      await db.muxData.upsert({
+        where: { chapterId }, // Look for an existing record with this `chapterId`
+        update: {
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
+        }, // Update if found
+        create: {
           chapterId,
           assetId: asset.id,
           playbackId: asset.playback_ids?.[0]?.id,
-        },
+        }, //  Create if not found
       });
     }
     return new NextResponse("Chapter Updated Successfully...", { status: 200 });
@@ -89,7 +94,6 @@ export async function DELETE(
     }
 
     // because my mux account is not verified.It will not work.Video automatically deleted after 1 days.
-    
 
     // if (chapter.videoUrl) {
     //   const existingMuxData = await db.muxData.findFirst({

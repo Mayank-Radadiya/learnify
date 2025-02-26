@@ -96,6 +96,15 @@ const VideoForm = ({ data, courseId, chapterId }: descriptionFormProps) => {
             <>
               {" "}
               <div className="relative aspect-video mt-2">
+                {/* {!data.muxData && (
+                  <div className="absolute flex items-center inset-0 justify-center bg-slate-700">
+                    <Trash className="text-white" size={64} />
+                    <p className="text-sm text-slate-300">
+                      Video was deleted due to my low budget🥺.{" "}
+                    </p>
+                  </div>
+                )} */}
+
                 <MuxPlayer playbackId={data?.muxData?.playbackId || ""} />
               </div>{" "}
             </>
