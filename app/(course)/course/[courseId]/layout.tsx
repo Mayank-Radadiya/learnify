@@ -60,7 +60,11 @@ const CourseLayout = async ({ children, params }: layoutProps) => {
 
   return (
     <SidebarProvider>
-      <CourseSidebar course={course} progressCount={progressCount} />
+      <CourseSidebar
+        course={course}
+        progressCount={progressCount}
+        purchase={purchase}
+      />
 
       <main className="m-2 w-full">
         <div className="flex items-center gap-2 rounded-md bg-sidebar p-2 px-4 shadow">

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { BookOpen, Loader } from "lucide-react";
 import { FormatPrice } from "@/lib/FormatPrice";
 import { IconBadge } from "./Icon-bage";
+import ProgressBar from "./ProgressBar";
 
 interface CourseCardProps {
   id: string;
@@ -70,12 +71,15 @@ const CourseCard = ({
                   <IconBadge icon={BookOpen} variant="success" shadow="sm" />
                   {chapterLength} chapters
                 </span>
-                <span className="text-sm text-muted-foreground">
-                  {progress}% completed
-                </span>
               </div>
 
-              {/* Course Progressbar */}
+              {progress !== null && (
+                <ProgressBar
+                  size="sm"
+                  value={progress!}
+                  variant={progress == 100 ? "success" : "default"}
+                />
+              )}
             </div>
           </div>
         </div>

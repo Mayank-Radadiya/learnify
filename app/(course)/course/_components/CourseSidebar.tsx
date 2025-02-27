@@ -1,5 +1,5 @@
 "use client";
-import { Chapter, Course, UserProgress } from "@prisma/client";
+import { Chapter, Course, Purchase, UserProgress } from "@prisma/client";
 import {
   Sidebar,
   SidebarContent,
@@ -16,6 +16,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import CourseSidebarItem from "./CourseSidebarItem";
+import ProgressBar from "@/components/global/ProgressBar";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -23,10 +24,15 @@ interface CourseSidebarProps {
       userProgress: UserProgress[] | null;
     })[];
   };
+  purchase: Purchase | null;
   progressCount: number;
 }
 
-const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => {
+const CourseSidebar = ({
+  course,
+  progressCount,
+  purchase,
+}: CourseSidebarProps) => {
   const { open } = useSidebar();
   const pathname = usePathname();
 
@@ -34,16 +40,27 @@ const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => {
     <>
       <Sidebar collapsible="icon" variant="floating">
         <SidebarHeader>
-          <div
-            className={cn("flex items-center justify-between gap-2", {
-              "flex-col-reverse": !open,
-            })}
-          >
-            <Link href="/">
-              <Image src="/logo.svg" width={40} height={40} alt="logo" />
-            </Link>
-            {open && <h1 className="text-xl font-bold">Learnify</h1>}
-            <SidebarTrigger />
+          <div className="p-1 gap-y-5 flex flex-col">
+            <div
+              className={cn("flex items-center justify-between gap-2", {
+                "flex-col-reverse": !open,
+              })}
+            >
+              <Link href="/">
+                <Image src="/logo.svg" width={40} height={40} alt="logo" />
+              </Link>
+              {open && <h1 className="text-xl font-bold">Learnify</h1>}
+
+              <SidebarTrigger />
+            </div>
+
+            <div>
+              {purchase && (
+                <>
+                  <ProgressBar variant="success" value={progressCount} />
+                </>
+              )}
+            </div>
           </div>
         </SidebarHeader>
 
@@ -61,7 +78,7 @@ const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => {
                       isCompleted={
                         chapter.userProgress?.[0]?.isCompleted || false
                       }
-                      isFree={chapter.isFree}
+                      isFree={chapter.isFree && !purchase}
                       courseId={course.id}
                     />
                   );

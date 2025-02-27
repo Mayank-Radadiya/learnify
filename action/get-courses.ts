@@ -85,8 +85,6 @@ export async function getCourses({
       },
     });
 
-    console.log("courses", courses);
-
     return await Promise.all(
       courses.map(async (course) => {
         const progress = course.purchases.length
