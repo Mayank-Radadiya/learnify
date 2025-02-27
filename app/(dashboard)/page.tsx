@@ -1,20 +1,19 @@
-import { db } from "@/lib/db";
-import Link from "next/link";
+import { getCourses } from "@/action/get-courses";
+import CourseList from "@/components/global/CourseList";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const course = await db.course.findMany();
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const courses = await getCourses({ userId });
 
   return (
     <>
-      {course.map((course) => (
-        <Link
-          key={course.id}
-          href={`/teacher/course/${course.id}`}
-          className="cursor-pointer border bg-sky-200 p-4 rounded-md flex flex-col"
-        >
-          <h1>{course.title}</h1>
-        </Link>
-      ))}
+      <CourseList items={courses} />
     </>
   );
 }
