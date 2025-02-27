@@ -1,12 +1,12 @@
-"use server"
+"use server";
 import { db } from "@/lib/db";
 
 export async function getProgress(userId: string, courseId: string) {
   try {
-    // get all courses that are published
-    const publishedCourses = await db.course.findMany({
+    // Get published course chapters
+    const publishedChapters = await db.chapter.findMany({
       where: {
-        id: courseId,
+        courseId,
         isPublished: true,
       },
       select: {
@@ -14,24 +14,27 @@ export async function getProgress(userId: string, courseId: string) {
       },
     });
 
-    // get all chapters id
-    const publishedChapterID = publishedCourses.map((chapter) => chapter.id);
+    const publishedChapterIDs = publishedChapters.map((chapter) => chapter.id);
 
+    if (publishedChapterIDs.length === 0) return 0;
+
+    // Count completed chapters
     const validCompletedChapters = await db.userProgress.count({
       where: {
-        id: userId,
+        userId, // Corrected from id: userId
         chapterId: {
-          in: publishedChapterID,
+          in: publishedChapterIDs,
         },
         isCompleted: true,
       },
     });
+
     const progressPercentage =
-      (validCompletedChapters / publishedChapterID.length) * 100;
+      (validCompletedChapters / publishedChapterIDs.length) * 100;
 
     return progressPercentage;
   } catch (error) {
-    console.error("error from getProgress", error);
+    console.error("Error from getProgress:", error);
     return 0;
   }
 }

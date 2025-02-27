@@ -51,7 +51,7 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
         success: <b>Course description 🚀🚀🚀</b>,
         error: <b>Failed to update course description</b>,
       })
-      .then((data) => route.refresh())
+      .then(() => route.refresh())
       .then(() => setIsEditing(false))
       .catch((error) => {
         console.log(error);
@@ -88,8 +88,13 @@ const DescriptionForm = ({ data, courseId }: descriptionFormProps) => {
         </div>
         {!isEditing && (
           <>
-            <p className={cn("text-sm mt-2", !data.description && "italic")}>
-              {data.description || "No description"}{" "}
+            <p
+              className={cn(
+                "text-sm mt-2 break-words truncate",
+                !data.description && "italic"
+              )}
+            >
+              {data.description || "No description"}
             </p>
           </>
         )}

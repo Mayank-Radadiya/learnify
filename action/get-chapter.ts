@@ -79,9 +79,7 @@ export async function getChapter({
     const userProgress = await db.userProgress.findFirst({
       where: {
         userId,
-        chapter: {
-          courseId, // Filter via relation
-        },
+        chapterId,
       },
     });
 

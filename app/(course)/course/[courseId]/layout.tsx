@@ -57,6 +57,7 @@ const CourseLayout = async ({ children, params }: layoutProps) => {
       },
     },
   });
+  
 
   return (
     <SidebarProvider>

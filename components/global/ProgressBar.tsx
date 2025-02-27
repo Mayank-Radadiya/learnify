@@ -9,7 +9,7 @@ interface ProgressBarProps {
 
 const colorByVariant = {
   default: "text-sky-700",
-  success: "bg-emerald-700",
+  success: "text-emerald-700",
 };
 
 const sizeByVariant = {
@@ -24,7 +24,7 @@ const ProgressBar = ({ value, variant, size }: ProgressBarProps) => {
         className={cn(
           "font-medium mt-2 text-sky-600",
           colorByVariant[variant || "default"],
-          sizeByVariant[size || "default"],
+          sizeByVariant[size || "default"]
         )}
       >
         {Math.round(value)}% completed{" "}

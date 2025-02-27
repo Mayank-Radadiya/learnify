@@ -9,6 +9,7 @@ import CourseEnrollButton from "@/components/global/CourseEnrollButton";
 import { Separator } from "@/components/ui/separator";
 import Preview from "@/components/Editor/Preview";
 import { File } from "lucide-react";
+import CourseProgressButton from "../_components/CourseProgressButton";
 
 interface PageProps {
   params: {
@@ -71,7 +72,14 @@ const Page: NextPage<PageProps> = async ({ params }) => {
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">
           <h2 className="text-2xl mb-2 font-semibold">{chapter.title}</h2>
           {purchase ? (
-            <>purchase </>
+            <>
+              <CourseProgressButton
+                chapterId={chapterId}
+                courseId={courseId}
+                isCompleted={userProgress?.isCompleted}
+                nextChapterId={nextChapter?.id || ""}
+              />{" "}
+            </>
           ) : (
             <>
               <CourseEnrollButton courseId={courseId} price={course.price!} />
@@ -79,9 +87,7 @@ const Page: NextPage<PageProps> = async ({ params }) => {
           )}
         </div>
         <Separator />
-        <div>
-          <Preview value={chapter.description!} />
-        </div>
+        <div>{purchase && <Preview value={chapter.description!} />}</div>
         {!!attachment.length && (
           <>
             <Separator />

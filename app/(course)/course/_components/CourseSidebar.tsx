@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 import CourseSidebarItem from "./CourseSidebarItem";
 import ProgressBar from "@/components/global/ProgressBar";
@@ -34,7 +33,6 @@ const CourseSidebar = ({
   purchase,
 }: CourseSidebarProps) => {
   const { open } = useSidebar();
-  const pathname = usePathname();
 
   return (
     <>
@@ -78,7 +76,7 @@ const CourseSidebar = ({
                       isCompleted={
                         chapter.userProgress?.[0]?.isCompleted || false
                       }
-                      isFree={chapter.isFree && !purchase}
+                      isFree={!chapter.isFree && !purchase}
                       courseId={course.id}
                     />
                   );
