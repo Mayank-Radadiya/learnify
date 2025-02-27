@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { Course } from "@prisma/client";
 import Image from "next/image";
 import FileUpload from "@/components/global/File-Upload";
-import { cn } from "@/lib/utils";
 
 interface descriptionFormProps {
   data: Course;

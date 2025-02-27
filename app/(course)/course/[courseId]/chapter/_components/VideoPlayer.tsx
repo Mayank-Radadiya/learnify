@@ -7,24 +7,12 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 interface VideoPlayerProps {
-  chapterId: string;
   title: string;
-  courseId: string;
-  nextChapterId?: string;
   playbackId: string;
   isLocked: boolean;
-  completedOnEnd: boolean;
 }
 
-const VideoPlayer = ({
-  chapterId,
-  title,
-  courseId,
-  nextChapterId,
-  playbackId,
-  isLocked,
-  completedOnEnd,
-}: VideoPlayerProps) => {
+const VideoPlayer = ({ title, playbackId, isLocked }: VideoPlayerProps) => {
   const [isReady, setReady] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 

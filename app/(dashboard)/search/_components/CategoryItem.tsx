@@ -1,4 +1,6 @@
 "use client";
+
+import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconType } from "react-icons";
@@ -10,7 +12,7 @@ interface CategoryItemProps {
   value?: string;
 }
 
-const CategoryItem = ({ label, value, icon: Icon }: CategoryItemProps) => {
+const CategoryItemContent = ({ label, value, icon: Icon }: CategoryItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,7 +38,6 @@ const CategoryItem = ({ label, value, icon: Icon }: CategoryItemProps) => {
   };
 
   return (
-    <>
     <button
       onClick={onClick}
       className={cn(
@@ -48,7 +49,14 @@ const CategoryItem = ({ label, value, icon: Icon }: CategoryItemProps) => {
       {Icon && <Icon className="mr-2" />}
       <div className="truncate">{label}</div>
     </button>
-    </>
+  );
+};
+
+const CategoryItem = (props: CategoryItemProps) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CategoryItemContent {...props} />
+    </Suspense>
   );
 };
 

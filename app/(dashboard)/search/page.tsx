@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
@@ -16,7 +16,7 @@ type CourseWithProgressWithCategory = Course & {
   chapters: { id: string }[];
 };
 
-const Page = ({}) => {
+const PageContent = () => {
   const { userId } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,7 +25,6 @@ const Page = ({}) => {
   const categoryId = searchParams.get("categoryId") || "";
 
   const [data, setData] = useState<Category[] | null>(null);
-
   const [courses, setCourses] = useState<CourseWithProgressWithCategory[]>([]);
 
   useEffect(() => {
@@ -69,6 +68,14 @@ const Page = ({}) => {
 
       <CourseList items={courses} />
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
+    </Suspense>
   );
 };
 

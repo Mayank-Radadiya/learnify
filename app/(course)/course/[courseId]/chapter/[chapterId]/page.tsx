@@ -43,7 +43,7 @@ const Page: NextPage<PageProps> = async ({ params }) => {
   }
 
   const isLocked = !chapter.isFree && !purchase;
-  const completedOnEnd = !!purchase && userProgress?.isCompleted;
+  // const completedOnEnd = !!purchase && userProgress?.isCompleted;
 
   return (
     <div>
@@ -60,13 +60,9 @@ const Page: NextPage<PageProps> = async ({ params }) => {
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
         <div className="p-4">
           <VideoPlayer
-            chapterId={chapterId}
             title={chapter.title}
-            courseId={courseId}
-            nextChapterId={nextChapter?.id}
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
-            completedOnEnd={completedOnEnd || false}
           />
         </div>
         <div className="p-4 flex flex-col md:flex-row items-center justify-between">

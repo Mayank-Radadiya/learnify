@@ -73,7 +73,6 @@ const CourseLayout = async ({ children, params }: layoutProps) => {
         </div>
 
         <div className="h-4"></div>
-        {/* main Content */}
         <div className="h-[calc(100vh-6rem)] overflow-y-scroll rounded-md bg-sidebar p-4 shadow">
           {children}
         </div>

@@ -5,8 +5,8 @@ export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
 });
 
-
 // Add this configuration
 export const config = {
-  matcher: ['*']
+  // Corrected matcher pattern that starts with a slash
+  matcher: ["/api/uploadthing"],
 };

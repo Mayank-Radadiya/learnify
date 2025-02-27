@@ -1,4 +1,3 @@
-import Loader from "@/components/global/Loader";
 import Loader2 from "@/components/global/Loader2";
 
 export default function Loading() {

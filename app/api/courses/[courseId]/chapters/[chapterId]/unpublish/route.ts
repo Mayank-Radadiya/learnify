@@ -1,10 +1,8 @@
 import { db } from "@/lib/db";
-import { NextRequest } from "next/server";
 
-export async function PATCH(
-  req: NextRequest,
-  params: { params: { chapterId: string; courseId: string } }
-) {
+export async function PATCH(params: {
+  params: { chapterId: string; courseId: string };
+}) {
   try {
     const { chapterId, courseId } = await params.params;
 

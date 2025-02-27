@@ -9,7 +9,7 @@ export async function PUT(
   try {
     const { userId } = await auth(); // No need for await
     const { isCompleted } = await req.json();
-    const { courseId, chapterId } = await params; // Directly destructure
+    const {  chapterId } = await params; // Directly destructure
 
     if (!userId) {
       return new NextResponse("You need to be logged in", { status: 401 });
