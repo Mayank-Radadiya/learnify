@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "@react-quill/dist/quill.bubble.css";
-@import "@react-quill/dist/quill.bubble.css";
 body {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
