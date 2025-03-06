@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import TitleForm from "./_components/TitleForm";
 import DescriptionForm from "./_components/DescriptionFrom";
@@ -29,6 +29,7 @@ import Banner from "@/components/global/Banner";
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
   const { courseId } = await params;
+  console.log("course Id", courseId);
 
   if (!userId) {
     toast.error("You must be logged in to view this page");

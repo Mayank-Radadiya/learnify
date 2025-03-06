@@ -22,6 +22,7 @@ const ChapterAction = ({
   disabled,
 }: ChapterActionProps) => {
   const [loading, setLoading] = useState(false);
+  
   const route = useRouter();
   const onDelete = async () => {
     try {
