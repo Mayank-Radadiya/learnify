@@ -50,6 +50,7 @@ async function main() {
   } finally {
     await database.$disconnect();
   }
+  
 }
 
 await main();

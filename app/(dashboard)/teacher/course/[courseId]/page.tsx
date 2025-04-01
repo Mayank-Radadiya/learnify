@@ -29,7 +29,6 @@ import Banner from "@/components/global/Banner";
 const Page = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
   const { courseId } = await params;
-  console.log("course Id", courseId);
 
   if (!userId) {
     toast.error("You must be logged in to view this page");
@@ -60,7 +59,8 @@ const Page = async ({ params }: { params: { courseId: string } }) => {
       name: "asc",
     },
   });
-
+  
+  
   if (!course) {
     toast.error("Course not found");
     return redirect("/");
